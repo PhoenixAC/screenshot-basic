@@ -38,6 +38,7 @@ router.post('/upload/:token', async (ctx) => {
 
         if (f) {
             if (upload.fileName) {
+                // @ts-ignore
                 mv(f.path, upload.fileName, (err) => {
                     if (err) {
                         finish(err.message, null);
@@ -47,13 +48,16 @@ router.post('/upload/:token', async (ctx) => {
                     finish(null, upload.fileName);
                 });
             } else {
+                // @ts-ignore
                 fs.readFile(f.path, (err, data) => {
                     if (err) {
                         finish(err.message, null);
                         return;
                     }
 
+                    // @ts-ignore
                     fs.unlink(f.path, (err) => {
+                        // @ts-ignore
                         finish(null, `data:${f.type};base64,${data.toString('base64')}`);
                     });
                 });
